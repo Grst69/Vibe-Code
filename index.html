@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vibe Code — Ship with AI, Not Against It</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #050510;
+      --bg-card: rgba(255,255,255,0.03);
+      --border: rgba(255,255,255,0.06);
+      --border-hover: rgba(255,255,255,0.12);
+      --text: #ffffff;
+      --text-dim: #888899;
+      --text-muted: #555566;
+      --accent: #6c5ce7;
+      --accent2: #00cec9;
+      --accent3: #fd79a8;
+      --gradient: linear-gradient(135deg, #6c5ce7, #00cec9);
+      --font-sans: 'Inter', -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ========== GLOW EFFECTS ========== */
+    .glow-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(120px);
+      pointer-events: none;
+      opacity: 0.4;
+    }
+    .glow-1 { width: 600px; height: 600px; background: #6c5ce7; top: -200px; left: -100px; }
+    .glow-2 { width: 500px; height: 500px; background: #00cec9; top: -100px; right: -150px; }
+    .glow-3 { width: 400px; height: 400px; background: #fd79a8; bottom: -100px; left: 30%; }
+
+    /* ========== NAV ========== */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 32px;
+      background: rgba(5,5,16,0.8);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      display: flex; align-items: center; gap: 10px;
+      font-weight: 800; font-size: 18px; letter-spacing: -0.5px;
+    }
+
+    .nav-logo .icon {
+      width: 32px; height: 32px;
+      background: var(--gradient);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px; font-weight: 900;
+    }
+
+    .nav-links { display: flex; align-items: center; gap: 32px; }
+
+    .nav-links a {
+      color: var(--text-dim); font-size: 14px; font-weight: 500;
+      text-decoration: none; transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--text); }
+
+    .nav-cta {
+      padding: 8px 20px;
+      background: var(--gradient);
+      color: white !important;
+      border-radius: 8px;
+      font-weight: 600 !important;
+      font-size: 14px;
+    }
+
+    /* ========== HERO ========== */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: 140px 24px 80px;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 6px 16px;
+      background: rgba(108,92,231,0.1);
+      border: 1px solid rgba(108,92,231,0.3);
+      border-radius: 100px;
+      font-size: 13px; font-weight: 500;
+      color: var(--accent);
+      margin-bottom: 32px;
+      animation: fadeUp 0.8s ease;
+    }
+
+    .hero-badge .dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--accent2);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.5); }
+    }
+
+    .hero h1 {
+      font-size: clamp(40px, 7vw, 80px);
+      font-weight: 900;
+      line-height: 1.05;
+      letter-spacing: -3px;
+      margin-bottom: 24px;
+      animation: fadeUp 0.8s ease 0.1s both;
+    }
+
+    .hero h1 .gradient-text {
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero p {
+      font-size: 18px;
+      color: var(--text-dim);
+      max-width: 560px;
+      line-height: 1.7;
+      margin-bottom: 40px;
+      animation: fadeUp 0.8s ease 0.2s both;
+    }
+
+    .hero-buttons {
+      display: flex; gap: 16px;
+      animation: fadeUp 0.8s ease 0.3s both;
+    }
+
+    .btn-primary {
+      padding: 14px 32px;
+      background: var(--gradient);
+      color: white;
+      border: none; border-radius: 12px;
+      font-size: 15px; font-weight: 700;
+      cursor: pointer; font-family: var(--font-sans);
+      display: flex; align-items: center; gap: 8px;
+      transition: all 0.3s;
+      box-shadow: 0 4px 30px rgba(108,92,231,0.3);
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 40px rgba(108,92,231,0.4); }
+
+    .btn-secondary {
+      padding: 14px 32px;
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border-hover);
+      border-radius: 12px;
+      font-size: 15px; font-weight: 600;
+      cursor: pointer; font-family: var(--font-sans);
+      display: flex; align-items: center; gap: 8px;
+      transition: all 0.3s;
+    }
+    .btn-secondary:hover { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.2); }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ========== TERMINAL DEMO ========== */
+    .terminal-wrapper {
+      position: relative;
+      width: 100%; max-width: 720px;
+      margin: 60px auto 0;
+      animation: fadeUp 0.8s ease 0.4s both;
+    }
+
+    .terminal {
+      background: #0d0d1a;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 20px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.05);
+    }
+
+    .terminal-header {
+      display: flex; align-items: center; gap: 8px;
+      padding: 14px 18px;
+      background: rgba(255,255,255,0.03);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .terminal-dot { width: 12px; height: 12px; border-radius: 50%; }
+    .terminal-dot.red { background: #ff5f57; }
+    .terminal-dot.yellow { background: #ffbd2e; }
+    .terminal-dot.green { background: #28c840; }
+
+    .terminal-title {
+      flex: 1; text-align: center;
+      font-size: 12px; color: var(--text-muted);
+      font-family: var(--font-mono);
+    }
+
+    .terminal-body {
+      padding: 20px;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      line-height: 1.8;
+      min-height: 280px;
+    }
+
+    .terminal-line { margin-bottom: 4px; opacity: 0; animation: typeLine 0.3s ease forwards; }
+    .terminal-line .prompt { color: var(--accent2); }
+    .terminal-line .cmd { color: var(--text); }
+    .terminal-line .comment { color: var(--text-muted); }
+    .terminal-line .success { color: #00b894; }
+    .terminal-line .info { color: var(--accent); }
+    .terminal-line .warn { color: #fdcb6e; }
+    .terminal-line .dim { color: var(--text-muted); }
+
+    @keyframes typeLine {
+      from { opacity: 0; transform: translateX(-5px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    .cursor-blink {
+      display: inline-block;
+      width: 8px; height: 16px;
+      background: var(--accent2);
+      animation: blink 1s step-end infinite;
+      vertical-align: middle;
+      margin-left: 2px;
+    }
+    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+    /* ========== STATS ========== */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      max-width: 900px;
+      margin: 100px auto 0;
+      background: var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      animation: fadeUp 0.8s ease 0.5s both;
+    }
+
+    .stat {
+      padding: 32px 24px;
+      background: var(--bg);
+      text-align: center;
+    }
+
+    .stat-number {
+      font-size: 36px;
+      font-weight: 900;
+      font-family: var(--font-mono);
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .stat-label {
+      font-size: 13px;
+      color: var(--text-dim);
+      margin-top: 4px;
+    }
+
+    /* ========== FEATURES ========== */
+    .features {
+      max-width: 1100px;
+      margin: 120px auto 0;
+      padding: 0 24px;
+    }
+
+    .section-label {
+      font-size: 12px; font-weight: 700;
+      letter-spacing: 3px; text-transform: uppercase;
+      color: var(--accent);
+      text-align: center;
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-size: clamp(28px, 4vw, 44px);
+      font-weight: 900;
+      text-align: center;
+      letter-spacing: -1.5px;
+      margin-bottom: 16px;
+    }
+
+    .section-desc {
+      font-size: 16px;
+      color: var(--text-dim);
+      text-align: center;
+      max-width: 520px;
+      margin: 0 auto 60px;
+      line-height: 1.7;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .feature-card {
+      padding: 32px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      transition: all 0.3s;
+      cursor: default;
+    }
+    .feature-card:hover {
+      border-color: var(--border-hover);
+      background: rgba(255,255,255,0.05);
+      transform: translateY(-4px);
+    }
+
+    .feature-icon {
+      width: 48px; height: 48px;
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px;
+      margin-bottom: 20px;
+    }
+
+    .feature-card h3 {
+      font-size: 17px; font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .feature-card p {
+      font-size: 14px;
+      color: var(--text-dim);
+      line-height: 1.7;
+    }
+
+    /* ========== CODE COMPARISON ========== */
+    .comparison {
+      max-width: 1000px;
+      margin: 120px auto 0;
+      padding: 0 24px;
+    }
+
+    .comparison-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    .code-block {
+      background: #0d0d1a;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .code-block-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 12px 18px;
+      background: rgba(255,255,255,0.02);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .code-block-header .label {
+      font-size: 12px; font-weight: 600;
+      letter-spacing: 1px; text-transform: uppercase;
+    }
+    .code-block-header .label.old { color: var(--text-muted); }
+    .code-block-header .label.new { color: var(--accent2); }
+
+    .code-block-body {
+      padding: 20px;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      line-height: 1.8;
+      min-height: 200px;
+    }
+
+    .code-block-body .line { display: block; }
+    .code-block-body .keyword { color: var(--accent); }
+    .code-block-body .string { color: #00b894; }
+    .code-block-body .func { color: var(--accent2); }
+    .code-block-body .comment { color: var(--text-muted); }
+    .code-block-body .type { color: var(--accent3); }
+    .code-block-body .num { color: #fdcb6e; }
+
+    /* ========== HOW IT WORKS ========== */
+    .how-it-works {
+      max-width: 900px;
+      margin: 120px auto 0;
+      padding: 0 24px;
+    }
+
+    .steps {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      position: relative;
+    }
+
+    .steps::before {
+      content: '';
+      position: absolute;
+      left: 23px;
+      top: 48px;
+      bottom: 48px;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--accent), var(--accent2), var(--accent3));
+      opacity: 0.3;
+    }
+
+    .step {
+      display: flex;
+      gap: 24px;
+      padding: 24px 0;
+    }
+
+    .step-number {
+      width: 48px; height: 48px;
+      min-width: 48px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-mono);
+      font-weight: 800;
+      font-size: 16px;
+      background: rgba(108,92,231,0.1);
+      border: 2px solid rgba(108,92,231,0.3);
+      color: var(--accent);
+      position: relative;
+      z-index: 1;
+    }
+
+    .step-content h3 {
+      font-size: 18px; font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .step-content p {
+      font-size: 14px;
+      color: var(--text-dim);
+      line-height: 1.7;
+    }
+
+    .step-content code {
+      background: rgba(108,92,231,0.1);
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      color: var(--accent);
+    }
+
+    /* ========== TESTIMONIALS ========== */
+    .testimonials {
+      max-width: 1000px;
+      margin: 120px auto 0;
+      padding: 0 24px;
+    }
+
+    .testimonial-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .testimonial {
+      padding: 28px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+    }
+
+    .testimonial-text {
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--text-dim);
+      margin-bottom: 20px;
+    }
+
+    .testimonial-author {
+      display: flex; align-items: center; gap: 12px;
+    }
+
+    .testimonial-avatar {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: var(--gradient);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; font-weight: 700;
+    }
+
+    .testimonial-name { font-size: 13px; font-weight: 600; }
+    .testimonial-role { font-size: 12px; color: var(--text-muted); }
+
+    /* ========== CTA ========== */
+    .cta-section {
+      max-width: 800px;
+      margin: 120px auto;
+      padding: 0 24px;
+      text-align: center;
+    }
+
+    .cta-box {
+      padding: 64px 40px;
+      background: linear-gradient(135deg, rgba(108,92,231,0.1), rgba(0,206,201,0.1));
+      border: 1px solid rgba(108,92,231,0.2);
+      border-radius: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-box::before {
+      content: '';
+      position: absolute;
+      top: -100px; right: -100px;
+      width: 300px; height: 300px;
+      background: var(--accent);
+      border-radius: 50%;
+      filter: blur(100px);
+      opacity: 0.15;
+    }
+
+    .cta-box h2 {
+      font-size: clamp(28px, 4vw, 40px);
+      font-weight: 900;
+      letter-spacing: -1px;
+      margin-bottom: 16px;
+      position: relative;
+    }
+
+    .cta-box p {
+      font-size: 16px;
+      color: var(--text-dim);
+      margin-bottom: 32px;
+      position: relative;
+    }
+
+    .cta-box .btn-primary {
+      display: inline-flex;
+      position: relative;
+    }
+
+    /* ========== FOOTER ========== */
+    footer {
+      padding: 40px 24px;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    footer a {
+      color: var(--text-dim);
+      text-decoration: none;
+    }
+
+    /* ========== FLOATING PARTICLES ========== */
+    #particles-canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .content { position: relative; z-index: 1; }
+
+    /* ========== RESPONSIVE ========== */
+    @media (max-width: 768px) {
+      nav { padding: 12px 16px; }
+      .nav-links a:not(.nav-cta) { display: none; }
+      .hero { padding: 120px 20px 60px; }
+      .hero h1 { letter-spacing: -1px; }
+      .stats { grid-template-columns: repeat(2, 1fr); }
+      .features-grid { grid-template-columns: 1fr; }
+      .comparison-grid { grid-template-columns: 1fr; }
+      .testimonial-grid { grid-template-columns: 1fr; }
+      .hero-buttons { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- PARTICLES -->
+  <canvas id="particles-canvas"></canvas>
+
+  <div class="content">
+
+    <!-- NAV -->
+    <nav>
+      <div class="nav-logo">
+        <div class="icon">⚡</div>
+        <span>vibe.<span style="background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">code</span></span>
+      </div>
+      <div class="nav-links">
+        <a href="#features">Features</a>
+        <a href="#how">How it Works</a>
+        <a href="#compare">Compare</a>
+        <a href="#" class="nav-cta">Get Started Free →</a>
+      </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="glow-orb glow-1"></div>
+      <div class="glow-orb glow-2"></div>
+
+      <div class="hero-badge">
+        <span class="dot"></span>
+        Now with Claude Code & GPT-5 support
+      </div>
+
+      <h1>
+        Ship with AI,<br>
+        <span class="gradient-text">Not Against It</span>
+      </h1>
+
+      <p>The next generation coding agent. Describe what you want in plain English, watch it build. From idea to production in minutes, not months.</p>
+
+      <div class="hero-buttons">
+        <button class="btn-primary" onclick="document.getElementById('demo').scrollIntoView({behavior:'smooth'})">
+          Try Live Demo
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </button>
+        <button class="btn-secondary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          Watch Demo
+        </button>
+      </div>
+
+      <!-- TERMINAL DEMO -->
+      <div class="terminal-wrapper" id="demo">
+        <div class="terminal">
+          <div class="terminal-header">
+            <div class="terminal-dot red"></div>
+            <div class="terminal-dot yellow"></div>
+            <div class="terminal-dot green"></div>
+            <div class="terminal-title">vibe-code — ~/my-project</div>
+          </div>
+          <div class="terminal-body" id="terminal-output"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STATS -->
+    <div class="content">
+      <div class="stats">
+        <div class="stat">
+          <div class="stat-number" data-target="2847">0</div>
+          <div class="stat-label">Apps Shipped Today</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number" data-target="12">0</div>
+          <div class="stat-label">Avg Minutes to Deploy</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number" data-target="99">0</div>
+          <div class="stat-label">% Success Rate</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number" data-target="50000">0</div>
+          <div class="stat-label">Developers</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FEATURES -->
+    <section class="features" id="features">
+      <div class="section-label">Features</div>
+      <div class="section-title">Everything you need to vibe code</div>
+      <div class="section-desc">Built for developers who want to move fast. No config needed — just describe and ship.</div>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon" style="background:rgba(108,92,231,0.1);">🧠</div>
+          <h3>Multi-Model Brain</h3>
+          <p>Switch between Claude, GPT-5, Gemini, and open-source models. Each optimized for different tasks.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" style="background:rgba(0,206,201,0.1);">⚡</div>
+          <h3>Instant Preview</h3>
+          <p>See your app live as it's being built. Hot reload with zero configuration. No waiting.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" style="background:rgba(253,121,168,0.1);">🔗</div>
+          <h3>MCP Integration</h3>
+          <p>Connect to any MCP server. Databases, APIs, file systems — everything at your fingertips.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" style="background:rgba(253,203,110,0.1);">🛡️</div>
+          <h3>Auto Security</h3>
+          <p>Built-in security scanning. SQL injection, XSS, CSRF — all caught before you deploy.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" style="background:rgba(0,184,148,0.1);">📦</div>
+          <h3>One-Click Deploy</h3>
+          <p>Vercel, Netlify, Cloudflare Workers, AWS — deploy anywhere with a single command.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" style="background:rgba(162,155,254,0.1);">🎨</div>
+          <h3>Design to Code</h3>
+          <p>Paste a screenshot, Figma link, or describe your design. Get production-ready UI in seconds.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section class="how-it-works" id="how">
+      <div class="section-label">How It Works</div>
+      <div class="section-title">Three steps to production</div>
+      <div class="section-desc">No setup wizard. No boilerplate. Just your idea and a terminal.</div>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-number">1</div>
+          <div class="step-content">
+            <h3>Describe your app</h3>
+            <p>Tell the AI what you want in natural language. <code>"Build me a real-time chat app with end-to-end encryption and file sharing"</code></p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <div class="step-content">
+            <h3>Watch it build</h3>
+            <p>The agent plans, codes, tests, and iterates — all in real-time. You can intervene anytime or just let it cook.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <div class="step-content">
+            <h3>Ship it</h3>
+            <p>One command to deploy. Your app is live, tested, and ready for users. <code>vibe deploy --prod</code></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CODE COMPARISON -->
+    <section class="comparison" id="compare">
+      <div class="section-label">Before & After</div>
+      <div class="section-title">The old way vs The vibe way</div>
+      <div class="section-desc">Same result. 100x faster.</div>
+
+      <div class="comparison-grid">
+        <div class="code-block">
+          <div class="code-block-header">
+            <span class="label old">The Old Way (3 hours)</span>
+            <span style="font-size:12px;color:var(--text-muted);">manual coding</span>
+          </div>
+          <div class="code-block-body">
+            <span class="line"><span class="comment">// 1. Set up project</span></span>
+            <span class="line"><span class="keyword">mkdir</span> my-app && <span class="keyword">cd</span> my-app</span>
+            <span class="line"><span class="keyword">npx</span> create-next-app@latest .</span>
+            <span class="line"><span class="keyword">npm</span> install prisma @prisma/client</span>
+            <span class="line"><span class="keyword">npm</span> install next-auth bcrypt</span>
+            <span class="line"><span class="keyword">npm</span> install tailwindcss</span>
+            <span class="line"><span class="comment">// ... 50 more packages</span></span>
+            <span class="line">&nbsp;</span>
+            <span class="line"><span class="comment">// 2. Configure everything</span></span>
+            <span class="line"><span class="comment">// 3. Write auth logic</span></span>
+            <span class="line"><span class="comment">// 4. Build UI components</span></span>
+            <span class="line"><span class="comment">// 5. Connect database</span></span>
+            <span class="line"><span class="comment">// 6. Write tests</span></span>
+            <span class="line"><span class="comment">// 7. Fix bugs</span></span>
+            <span class="line"><span class="comment">// 8. Deploy (hopefully)</span></span>
+            <span class="line">&nbsp;</span>
+            <span class="line"><span class="type">😤</span> <span class="comment">*frustrated developer noises*</span></span>
+          </div>
+        </div>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <span class="label new">The Vibe Way (3 minutes)</span>
+            <span style="font-size:12px;color:var(--accent2);">vibe code ✨</span>
+          </div>
+          <div class="code-block-body">
+            <span class="line"><span class="prompt">$</span> <span class="func">vibe</span> <span class="string">"Build a full-stack SaaS"</span></span>
+            <span class="line">&nbsp;</span>
+            <span class="line"><span class="success">✓</span> <span class="dim">Analyzing requirements...</span></span>
+            <span class="line"><span class="success">✓</span> <span class="dim">Setting up Next.js + Prisma</span></span>
+            <span class="line"><span class="success">✓</span> <span class="dim">Building auth with OAuth</span></span>
+            <span class="line"><span class="success">✓</span> <span class="dim">Creating UI components (14)</span></span>
+            <span class="line"><span class="success">✓</span> <span class="dim">Connecting PostgreSQL</span></span>
+            <span class="line"><span class="success">✓</span> <span class="dim">Writing tests (47 passed)</span></span>
+            <span class="line"><span class="success">✓</span> <span class="dim">Security scan passed</span></span>
+            <span class="line"><span class="success">✓</span> <span class="dim">Deploying to Vercel...</span></span>
+            <span class="line">&nbsp;</span>
+            <span class="line"><span class="success">🚀</span> <span class="string">Live at https://my-saas.vercel.app</span></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TESTIMONIALS -->
+    <section class="testimonials">
+      <div class="section-label">Love Letters</div>
+      <div class="section-title">Developers are shipping faster</div>
+
+      <div class="testimonial-grid">
+        <div class="testimonial">
+          <div class="testimonial-text">"I built and deployed my entire SaaS product in a weekend. What used to take me a month took 2 days."</div>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">SK</div>
+            <div>
+              <div class="testimonial-name">Sarah K.</div>
+              <div class="testimonial-role">Indie Hacker</div>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial">
+          <div class="testimonial-text">"The MCP integration is insane. I connected my Postgres database, Slack, and GitHub in minutes."</div>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">MC</div>
+            <div>
+              <div class="testimonial-name">Marcus C.</div>
+              <div class="testimonial-role">Staff Engineer @ Vercel</div>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial">
+          <div class="testimonial-text">"My non-technical co-founder built our MVP himself. I just reviewed the code. Wild times."</div>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">JL</div>
+            <div>
+              <div class="testimonial-name">Jess L.</div>
+              <div class="testimonial-role">CTO, StartupXYZ</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-section">
+      <div class="cta-box">
+        <h2>Ready to <span class="gradient-text">vibe code</span>?</h2>
+        <p>Join 50,000+ developers who already ship 100x faster.</p>
+        <button class="btn-primary">
+          Start Building Free
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </button>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+      <p>© 2026 vibe.code — Built with AI, by humans who vibe. · <a href="#">GitHub</a> · <a href="#">Twitter</a> · <a href="#">Discord</a></p>
+    </footer>
+
+  </div>
+
+  <script>
+    // ========== PARTICLES ==========
+    const pc = document.getElementById('particles-canvas');
+    const pctx = pc.getContext('2d');
+    let particles = [];
+
+    function resizePC() {
+      pc.width = window.innerWidth;
+      pc.height = window.innerHeight;
+    }
+    resizePC();
+    window.addEventListener('resize', resizePC);
+
+    class Particle {
+      constructor() {
+        this.reset();
+      }
+      reset() {
+        this.x = Math.random() * pc.width;
+        this.y = Math.random() * pc.height;
+        this.size = Math.random() * 2 + 0.5;
+        this.speedX = (Math.random() - 0.5) * 0.3;
+        this.speedY = (Math.random() - 0.5) * 0.3;
+        this.opacity = Math.random() * 0.5 + 0.1;
+        this.color = ['#6c5ce7', '#00cec9', '#fd79a8'][Math.floor(Math.random() * 3)];
+      }
+      update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+        if (this.x < 0 || this.x > pc.width || this.y < 0 || this.y > pc.height) this.reset();
+      }
+      draw() {
+        pctx.beginPath();
+        pctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        pctx.fillStyle = this.color;
+        pctx.globalAlpha = this.opacity;
+        pctx.fill();
+        pctx.globalAlpha = 1;
+      }
+    }
+
+    for (let i = 0; i < 80; i++) particles.push(new Particle());
+
+    function animateParticles() {
+      pctx.clearRect(0, 0, pc.width, pc.height);
+      particles.forEach(p => { p.update(); p.draw(); });
+
+      // Draw connections
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 120) {
+            pctx.beginPath();
+            pctx.moveTo(particles[i].x, particles[i].y);
+            pctx.lineTo(particles[j].x, particles[j].y);
+            pctx.strokeStyle = particles[i].color;
+            pctx.globalAlpha = (1 - dist / 120) * 0.15;
+            pctx.lineWidth = 0.5;
+            pctx.stroke();
+            pctx.globalAlpha = 1;
+          }
+        }
+      }
+      requestAnimationFrame(animateParticles);
+    }
+    animateParticles();
+
+    // ========== TERMINAL ANIMATION ==========
+    const termLines = [
+      { type: 'prompt', text: '$ ', cmd: 'vibe "Build me a real-time collaborative markdown editor with auth"' },
+      { type: 'blank' },
+      { type: 'info', text: '🧠 Planning architecture...' },
+      { type: 'success', text: '✓ Choosing stack: Next.js 15 + Socket.io + Prisma + PostgreSQL' },
+      { type: 'success', text: '✓ Generating project structure (24 files)' },
+      { type: 'success', text: '✓ Building auth system with Google + GitHub OAuth' },
+      { type: 'success', text: '✓ Creating real-time collab engine with CRDTs' },
+      { type: 'success', text: '✓ Building markdown editor (TipTap + custom plugins)' },
+      { type: 'success', text: '✓ Writing 147 unit tests... 147 passed ✓' },
+      { type: 'success', text: '✓ Security audit: 0 vulnerabilities found' },
+      { type: 'blank' },
+      { type: 'info', text: '🚀 Deploying to Vercel...' },
+      { type: 'blank' },
+      { type: 'success', text: '🎉 Live at https://collab-md.vercel.app' },
+      { type: 'blank' },
+      { type: 'dim', text: '   Built in 2m 47s · 24 files · 3,847 lines · 0 errors' },
+      { type: 'prompt-end', text: '$ ', cursor: true },
+    ];
+
+    function runTerminal() {
+      const container = document.getElementById('terminal-output');
+      container.innerHTML = '';
+      let delay = 0;
+
+      termLines.forEach((line, i) => {
+        setTimeout(() => {
+          const div = document.createElement('div');
+          div.className = 'terminal-line';
+          div.style.animationDelay = '0s';
+
+          if (line.type === 'prompt' || line.type === 'prompt-end') {
+            div.innerHTML = `<span class="prompt">${line.text}</span><span class="cmd">${line.cmd || ''}</span>${line.cursor ? '<span class="cursor-blink"></span>' : ''}`;
+          } else if (line.type === 'blank') {
+            div.innerHTML = '&nbsp;';
+          } else if (line.type === 'success') {
+            div.innerHTML = `<span class="success">${line.text}</span>`;
+          } else if (line.type === 'info') {
+            div.innerHTML = `<span class="info">${line.text}</span>`;
+          } else if (line.type === 'warn') {
+            div.innerHTML = `<span class="warn">${line.text}</span>`;
+          } else if (line.type === 'dim') {
+            div.innerHTML = `<span class="dim">${line.text}</span>`;
+          }
+
+          container.appendChild(div);
+          container.scrollTop = container.scrollHeight;
+
+          // Restart loop
+          if (i === termLines.length - 1) {
+            setTimeout(() => runTerminal(), 3000);
+          }
+        }, delay);
+
+        delay += line.type === 'blank' ? 200 : (line.type === 'prompt' || line.type === 'prompt-end') ? 600 : 300;
+      });
+    }
+
+    // Start terminal on scroll
+    const termObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          runTerminal();
+          termObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.3 });
+    termObserver.observe(document.getElementById('demo'));
+
+    // ========== STATS COUNTER ==========
+    function animateCounter(el) {
+      const target = parseInt(el.dataset.target);
+      const duration = 2000;
+      const start = performance.now();
+
+      function update(now) {
+        const progress = Math.min((now - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        const current = Math.floor(target * eased);
+
+        if (target >= 1000) {
+          el.textContent = (current / 1000).toFixed(current >= 10000 ? 0 : 1) + 'K+';
+        } else {
+          el.textContent = current + (target === 99 ? '%' : '+');
+        }
+
+        if (progress < 1) requestAnimationFrame(update);
+      }
+      requestAnimationFrame(update);
+    }
+
+    const statsObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.querySelectorAll('.stat-number').forEach(el => animateCounter(el));
+          statsObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.5 });
+    statsObserver.observe(document.querySelector('.stats'));
+
+    // ========== SCROLL REVEAL ==========
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.feature-card, .step, .testimonial, .code-block').forEach(el => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(30px)';
+      el.style.transition = 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)';
+      revealObserver.observe(el);
+    });
+  </script>
+</body>
+</html>
